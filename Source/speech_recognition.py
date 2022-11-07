@@ -4,6 +4,7 @@ import pyaudio
 
 
 SAMPLERATE = 44100
+print('Hello')
 
 def callback(in_data, frame_count, time_info, status):
     global sprec
