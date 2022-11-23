@@ -6,7 +6,7 @@ This is a temporary script file.
 """
 
 import speech_recognition as sr
-from pykakasi import kakasi
+#from pykakasi import kakasi
 
 def main():
     listener = sr.Recognizer()
