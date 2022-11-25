@@ -33,8 +33,6 @@ while True:
     count = count + 1
     if count >= 3:
         break
-
-
     
 cap.release()
 cv2.destroyAllWindows()

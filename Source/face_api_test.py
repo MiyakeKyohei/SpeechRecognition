@@ -16,6 +16,7 @@ from azure.cognitiveservices.vision.face import FaceClient
 from msrest.authentication import CognitiveServicesCredentials
 #import matplotlib.pyplot as plt
 import pandas as pd
+from azure.cognitiveservices.vision.face.models import FaceAttributeType
 
 ##初期設定
 cap = cv2.VideoCapture(0) #ひとまず0で内蔵カメラ。1にすると外付けカメラを使用できる
@@ -32,7 +33,7 @@ cascade = cv2.CascadeClassifier(cascade_path)
 subscription_key = '43339af7313b481db1b97970b9599809'
 assert subscription_key
 #エンドポイントURLの設定
-face_api_url = 'https://kmiyake-test.cognitiveservices.azure.com/'
+face_api_url = 'https://kmiyake-test.cognitiveservices.azure.com/face/v1.0/detect'
 #インスタンスの生成
 face_client = FaceClient(face_api_url, CognitiveServicesCredentials(subscription_key))
 
@@ -55,8 +56,7 @@ while True:
             filename = "temp\\number" + str(count) + '.jpg' #保存するファイル名
             cv2.imwrite(filename, img)#画像の書き出し
             
-            #image_data = open(filename, 'rb').read()#処理する画像を選択する
-            image_data = open(filename, 'rb')
+            image_data = open(filename, 'rb')#処理する画像を選択する
             headers = {'Ocp-Apim-Subscription-Key': subscription_key,
                        'Content-Type': 'application/octet-stream'}
             params = {
@@ -65,24 +65,24 @@ while True:
                 'returnFaceAttributes': 'age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise',
                 }
             #faceAPIで解析
-            #response = requests.post(face_api_url, headers = headers, params = params, data = image_data)
-            params_temp = ["headPose"] #テスト用返却パラメータ
-            response = face_client.face.detect_with_stream(image_data, return_face_attributes = params_temp)
+            response = requests.post(face_api_url, headers = headers, params = params, data = image_data)
+            # params_temp = [FaceAttributeType.head_pose] #テスト用返却パラメータ
+            #response = face_client.face.detect_with_stream(image = image_data) #, return_face_attributes = params_temp)
 
             #分析結果の表示
-            print(response[0].as_dict())
+            #print(response[0].as_dict())
 
             response.raise_for_status()
             analysis = response.json() #json出力
             
             #faceのjsonから抽出したい項目をピックアップ
-            result = [analysis[0]['faceAttributes']['headPose']['roll'],
-                        analysis[0]['faceAttributes']['headPose']['yaw'],
-                        analysis[0]['faceAttributes']['headPose']['pitch']]
+            result = [analysis[0]['faceAttributes']['head_pose']['roll'],
+                        analysis[0]['faceAttributes']['head_pose']['yaw'],
+                        analysis[0]['faceAttributes']['head_pose']['pitch']]
             
-            emotion_data = np.array(result) + np.array(emotion_data)
+            headPose_data = np.array(result) + np.array(headPose_data)
             
-            df = pd.DataFrame({now:emotion_data},
+            df = pd.DataFrame({now:headPose_data},
                               index = data_name) #取得データをDataFrame1に変換してdfとして定義
             
             if count == 0: #初期
