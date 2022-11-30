@@ -43,13 +43,13 @@ while True:
     #minSizeが小さすぎると顔のシミまで顔と判断しかねないため
     faces = cascade.detectMultiScale(img_gray, scaleFactor = 1.1, minNeighbors = 1, minSize = (100, 100))
     
-    if (cv2.waitKey(1) & 0xFF == ord('q')) | count > 2:
+    if (cv2.waitKey(1) & 0xFF == ord('q')) | count > 1:
         break
 
     if len(faces) > 0: #顔を検出した場合
         for face in faces:
             now = datetime.now()#撮影時間の取得
-            os.makedirs("temp", exist_ok = True)
+            os.makedirs("temp", exist_ok = True)#写真保存用のディレクトリを作成(あれば何もしない)
             filename = "temp\\number" + str(count) + '.jpg' #保存するファイル名
             cv2.imwrite(filename, img)#画像の書き出し
             
@@ -59,30 +59,20 @@ while True:
             analysis = response.json() #json出力
             print(analysis)
             
-            #faceのjsonから抽出したい項目をピックアップ
+            #faceのjsonから抽出したい項目を配列に入れる
             result = [analysis[0]['faceAttributes']['headPose']['roll'],
                         analysis[0]['faceAttributes']['headPose']['yaw'],
                         analysis[0]['faceAttributes']['headPose']['pitch']]
             
-            headPose_data = np.array(result) + np.array(headPose_data)
-            
-            df = pd.DataFrame({now:headPose_data},
-                              index = data_name) #取得データをDataFrame1に変換してdfとして定義
+            headPose_data = np.array(result)
+            print(headPose_data)
+            #df = pd.DataFrame({now:headPose_data}, index = data_name) #取得データをDataFrame1に変換してdfとして定義
             
             if count == 0: #初期
+                df = np.array(result)
                 df_past = df
-                print(df)
             else:
-                df = pd.concat([df_past, df], axis = 1, sort = False) #dfを更新
-                print(df)
-                
-            '''
-            plt.plot(df.T)#dfの行列を反転
-            plt.legend(data_name)#凡例を表示
-            plt.draw()#グラフ描画
-            plt.pause(4)#ウェイト時間（=Azure更新時間）
-            plt.cla()#グラフを閉じる
-            '''
+                df = pd.concat([df, np.array(result)]) #dfを更新
 
             count = count + 1#撮影回数の更新
             df_past = df #df_pastを更新
