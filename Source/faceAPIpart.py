@@ -17,7 +17,7 @@ class faceAPIpart:
     ENDPOINT = 'https://kmiyake-test.cognitiveservices.azure.com/'
     ##初期設定
     #cap = cv2.VideoCapture(0)#ひとまず0で内蔵カメラ。1にすると外付けカメラを使用できる
-    unable_Pose = [[180, 180, 180]]#あり得ない値
+    unable_Pose = [180, 180, 180]#あり得ない値
     count = 0 #撮影回数を示すカウンタ
 
     #faceAPIpartのクラスのインスタンスを定義するメソッド
@@ -42,11 +42,22 @@ class faceAPIpart:
         #faceAPIで解析
         response = requests.post(faceAPIpart.ENDPOINT + "face/v1.0/detect?returnFaceAttributes=headPose", data=image_data, headers={"Ocp-Apim-Subscription-Key": faceAPIpart.KEY, "Content-Type": "application/octet-stream"})
         analysis = response.json() #json出力
-        
+        #行列の生成
+        analysis_len = len(analysis) #検出した顔の個数
+        index = 0 #配列のインデックス
+        result = faceAPIpart.unable_Pose #返却用配列の初期化
         #faceのjsonから抽出したい項目を配列に入れる
-        result = [analysis[0]['faceAttributes']['headPose']['roll'],
-                    analysis[0]['faceAttributes']['headPose']['yaw'],
-                    analysis[0]['faceAttributes']['headPose']['pitch']]
+        while index < analysis_len:
+            result_temp = [analysis[index]['faceAttributes']['headPose']['roll'],
+                        analysis[index]['faceAttributes']['headPose']['yaw'],
+                        analysis[index]['faceAttributes']['headPose']['pitch']]
+            #行列の生成
+            if index == 0:
+                result = result_temp
+            else:
+                result = np.vstack((result, result_temp))
+            index = index + 1
+        #結果の出力
         return np.array(result)
 
     #imageデータをtempに保存する関数
@@ -69,7 +80,7 @@ class faceAPIpart:
 if __name__=="__main__":
     cap = cv2.VideoCapture(0)
     count = 0
-    while count < 3:
+    while count < 1:
         r, image = cap.read()
         print(faceAPIpart.get_headPose(image))
         count = count + 1
