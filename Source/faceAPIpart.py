@@ -17,12 +17,11 @@ class faceAPIpart:
     ENDPOINT = 'https://kmiyake-test.cognitiveservices.azure.com/'
     ##初期設定
     #cap = cv2.VideoCapture(0)#ひとまず0で内蔵カメラ。1にすると外付けカメラを使用できる
-    unable_Pose = [180, 180, 180]#あり得ない値
-    count = 0 #撮影回数を示すカウンタ
+    unable_Pose = [180, 180, 180] #あり得ない値
 
     #faceAPIpartのクラスのインスタンスを定義するメソッド
     def __init__(self):
-        headPose_data = [[0, 0, 0]]
+        headPose_data = [0, 0, 0]
 
     #カスケード分類器を用いて顔があるか判定する関数
     def cascade_judge(image): #imageはビデオから得た画像データ

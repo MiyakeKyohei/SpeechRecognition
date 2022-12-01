@@ -66,7 +66,7 @@ class faceAPIpart:
         cv2.imwrite(filename, image)#画像の書き出し
 
     #imageデータから顔の向きを返す関数
-    def get_headPose(image):
+    def get_headPose(self, image):
         try:
             if faceAPIpart.cascade_judge(image) == 1:
                 filename = "temp\\target.jpg"
