@@ -64,7 +64,6 @@ class faceAPIpart:
         except:
             return faceAPIpart.unable_Pose
 
-
 if __name__=="__main__":
     cap = cv2.VideoCapture(0)
     count = 0
