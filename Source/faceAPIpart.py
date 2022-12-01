@@ -6,7 +6,9 @@ import os
 
 class faceAPIpart:
     #顔認識に用いる識別機の設定
-    cascade_path = 'C:\\Users\\kyohe\\anaconda3\\lib\\site-packages\\cv2\\data\\haarcascade_frontalface_alt.xml'
+    #直接ディレクトリに置いても動きそう
+    #cascade_path = 'C:\\Users\\kyohe\\anaconda3\\lib\\site-packages\\cv2\\data\\haarcascade_frontalface_alt.xml'
+    cascade_path = 'haarcascade_frontalface_alt.xml'
     cascade = cv2.CascadeClassifier(cascade_path)
 
     #サブスクリプションキーの設定
