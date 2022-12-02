@@ -1,8 +1,10 @@
 import requests
 import json
 import numpy as np
-import cv2
 import os
+os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
+import cv2
+#import os
 
 class faceAPIpart:
     #顔認識に用いる識別機の設定
