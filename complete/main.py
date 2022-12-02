@@ -5,22 +5,41 @@ import pykakasi
 import MeCab
 import convert_hiragana_kakasi
 import textmatching
+import os
+os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
+import cv2
+import faceAPIpart as f
+import numpy as np
 #import mecab_split
 
 #テキストファイルopen
 datalist = databaseload.fopen()
+cap = cv2.VideoCapture(0)
 
 try:
     voice_text = voice_to_recognition.convert_text()#音声認識のファイル呼び込み
     print(voice_text)
 
+    r, image = cap.read()
+    face_api = f.faceAPIpart()
+    result = face_api.get_headPose(image)
+    print(result)
+
     #node = mecab_split.msplit(voice_text)
-    
+
     mecab = MeCab.Tagger()
     node = mecab.parseToNode(voice_text)#MeCab無理
- 
+
     kakasi = pykakasi.kakasi()#インスタンス用
-    
+    """
+    if __name__=="__main__":
+        count = 0
+        while count < 1:
+            r, image = cap.read()
+            print(faceAPIpart.get_headPose(image))
+            count = count + 1
+    """
+
     while node:
         
         text = convert_hiragana_kakasi.convert_hiragana(node,kakasi)#ひらがな変換
