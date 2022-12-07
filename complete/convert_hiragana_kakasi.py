@@ -1,5 +1,4 @@
 def convert_hiragana(node,kakasi):
-    print(node.surface)#テキスト化されたワード
     
     result = kakasi.convert(node.surface)#変換
     

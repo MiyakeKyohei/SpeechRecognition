@@ -31,14 +31,7 @@ try:
     node = mecab.parseToNode(voice_text)#MeCab無理
 
     kakasi = pykakasi.kakasi()#インスタンス用
-    """
-    if __name__=="__main__":
-        count = 0
-        while count < 1:
-            r, image = cap.read()
-            print(faceAPIpart.get_headPose(image))
-            count = count + 1
-    """
+
 
     while node:
         
