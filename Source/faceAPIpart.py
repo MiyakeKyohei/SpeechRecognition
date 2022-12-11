@@ -85,7 +85,7 @@ class faceAPIpart:
             return faceAPIpart.unable_Pose
 
 if __name__=="__main__":
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     count = 0
     while count < 1:
         r, image = cap.read()
