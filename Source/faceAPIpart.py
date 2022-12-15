@@ -72,7 +72,7 @@ class faceAPIpart:
         cv2.imwrite(filename, image)#画像の書き出し
 
     #imageデータから顔の向きを返す関数
-    def get_headPose(image):
+    def get_headPose(self, image):
         try:
             #if faceAPIpart.cascade_judge(image) == 1:
             if True:
@@ -84,10 +84,11 @@ class faceAPIpart:
         except:
             return faceAPIpart.unable_Pose
 
-if __name__=="__main__":
-    cap = cv2.VideoCapture(0)
-    count = 0
-    while count < 1:
-        r, image = cap.read()
-        print(faceAPIpart.get_headPose(image))
-        count = count + 1
+
+#if __name__=="__main__":
+#    cap = cv2.VideoCapture(0)
+#    count = 0
+#    while count < 1:
+#        r, image = cap.read()
+#        print(faceAPIpart.get_headPose(image))
+#        count = count + 1
