@@ -4,6 +4,7 @@ import numpy as np
 import os
 os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
 import cv2
+import calculate as cl
 #import os
 
 class faceAPIpart:
@@ -85,10 +86,14 @@ class faceAPIpart:
             return faceAPIpart.unable_Pose
 
 
-#if __name__=="__main__":
-#    cap = cv2.VideoCapture(0)
-#    count = 0
-#    while count < 1:
-#        r, image = cap.read()
-#        print(faceAPIpart.get_headPose(image))
-#        count = count + 1
+if __name__=="__main__":
+    cap = cv2.VideoCapture(0)
+    count = 0
+    while count < 1:
+        r, image = cap.read()
+        ret_array = faceAPIpart.get_headPose(image)
+        if cl.look_or_not(ret_array[5], ret_array[1], ret_array[2]) == 1:
+            print("見ている")
+        else:
+            print("見ていない")
+        count = count + 1
