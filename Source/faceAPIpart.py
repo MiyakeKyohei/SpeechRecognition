@@ -15,9 +15,11 @@ class faceAPIpart:
     cascade = cv2.CascadeClassifier(cascade_path)
 
     #サブスクリプションキーの設定
-    KEY = '43339af7313b481db1b97970b9599809'
+    #KEY = '43339af7313b481db1b97970b9599809'(以前のやつ)
+    KEY = '12300f103f6041ea8cf703d62c22a5c8'
     #エンドポイントURLの設定
-    ENDPOINT = 'https://kmiyake-test.cognitiveservices.azure.com/'
+    #ENDPOINT = 'https://kmiyake-test.cognitiveservices.azure.com/'(旧エンドポイント)
+    ENDPOINT = 'https://miyakenewface.cognitiveservices.azure.com/'
     ##初期設定
     #cap = cv2.VideoCapture(0)#ひとまず0で内蔵カメラ。1にすると外付けカメラを使用できる
     unable_Pose = [180, 180, 180] #あり得ない値

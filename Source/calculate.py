@@ -18,7 +18,7 @@ def yaw_judge(yaw):
         return 0
 
 def pitch_judge(width, pitch):
-    avg_width = 120.0 #100cm離れた人の顔の幅平均(未定)
+    avg_width = 120.0 #100cm離れた人の顔の幅平均(おおよそ確定)
     look_position = -1 #返却用変数(後に何か入れるがエラー時はそのまま)
     #上の三角形の情報
     tall = 30 #カメラと人の頭の距離(カメラが高さ200cm設定)

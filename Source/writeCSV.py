@@ -29,7 +29,8 @@ if __name__=="__main__":
         elif keyboard.is_pressed("q"): #qが押されたらwhile文を抜ける
             break
     # csvファイルにデータを記述する
-    with open('data_test.csv', 'w', newline='') as f:
+    
+    with open('data_test_07.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(label)
         writer.writerows(data)
