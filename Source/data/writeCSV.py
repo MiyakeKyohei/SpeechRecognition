@@ -22,14 +22,13 @@ if __name__=="__main__":
                 position_result = cl.pitch_judge(temp_row[5], temp_row[2])
                 data_temp = np.hstack((temp_row, look_result, position_result))
                 if flag == 0:
-                    data = data_temp
+                    data = np.array([data_temp])
                     flag = 1
                 else:
                     data = np.vstack((data, data_temp))
         elif keyboard.is_pressed("q"): #qが押されたらwhile文を抜ける
             break
     # csvファイルにデータを記述する
-    
     with open('data_test_07.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(label)

@@ -46,7 +46,6 @@ class faceAPIpart:
         #faceAPIで解析
         response = requests.post(faceAPIpart.ENDPOINT + "face/v1.0/detect?returnFaceAttributes=headPose", data=image_data, headers={"Ocp-Apim-Subscription-Key": faceAPIpart.KEY, "Content-Type": "application/octet-stream"})
         analysis = response.json() #json出力
-        print(analysis)
         #行列の生成
         analysis_len = len(analysis) #検出した顔の個数
         index = 0 #配列のインデックス
@@ -62,7 +61,7 @@ class faceAPIpart:
                         analysis[index]['faceRectangle']['height']]
             #行列の生成
             if index == 0:
-                result = result_temp
+                result = np.vstack((result_temp, result_temp))
             else:
                 result = np.vstack((result, result_temp))
             index = index + 1
@@ -78,12 +77,9 @@ class faceAPIpart:
     def get_headPose(self, image):
         try:
             #if faceAPIpart.cascade_judge(image) == 1:
-            if True:
-                filename = "temp\\target.jpg"
-                faceAPIpart.saveImage(filename, image)
-                return faceAPIpart.get_faceAPI_result(filename)
-            else:
-                return faceAPIpart.unable_Pose
+            filename = "temp\\target.jpg" #撮影した画像をtemp\\target.jpgに保存
+            faceAPIpart.saveImage(filename, image)
+            return faceAPIpart.get_faceAPI_result(filename)
         except:
             return faceAPIpart.unable_Pose
 

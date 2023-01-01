@@ -4,19 +4,27 @@ from scipy import stats
 import matplotlib.pyplot as plt
 from sklearn.neighbors import KernelDensity
 import numpy as np
+from statistics import mean, variance
 
 #データの読み込み
-df_sample = pd.read_csv("data_test_06.csv")
+df_sample = pd.read_csv("muramatsu_data.csv")
 
 #シャピロウィルクの検定
-result1 = stats.shapiro(df_sample["pitch"])
+result1 = stats.shapiro(df_sample["yaw"])
 print(result1)
 
 #コルゴモロフ・スミルノフ検定
-result2 = stats.ks_1samp(df_sample["pitch"], stats.norm.cdf)
+result2 = stats.ks_1samp(df_sample["yaw"], stats.norm.cdf)
 print(result2)
 
-yaw_sample = df_sample["pitch"].to_numpy()
+yaw_mean = mean(df_sample["yaw"])
+print("yaw_mean is ", yaw_mean)
+yaw_variance = variance(df_sample["yaw"])
+print("yaw_variance is ", yaw_variance)
+
+
+'''
+yaw_sample = df_sample["yaw"].to_numpy()
 #カーネル関数はガウシアンモデルでフィット
 kde = KernelDensity(kernel='gaussian', bandwidth=0.1).fit(yaw_sample[:,None])
 #入力用データ
@@ -28,3 +36,4 @@ dens = kde.score_samples(x)
 #描画用figを準備
 plt.plot(x, np.exp(dens), color='orange')
 plt.savefig("test_pitch.png")
+'''
