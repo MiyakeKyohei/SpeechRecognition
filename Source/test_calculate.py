@@ -11,7 +11,9 @@ if __name__=="__main__":
     while True:
         if keyboard.is_pressed("e"):
             r, image = cap.read()
-            look_result = cl.look_or_not(face_api.get_headPose(image))
+            result_row = face_api.get_headPose(image)
+            print("HeadPose is : ", result_row)
+            look_result = cl.look_or_not(result_row)
             print("look result is : ", look_result)
         elif keyboard.is_pressed("q"):
             break

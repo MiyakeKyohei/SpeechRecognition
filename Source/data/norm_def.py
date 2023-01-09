@@ -7,7 +7,7 @@ import numpy as np
 from statistics import mean, variance
 
 #データの読み込み
-df_sample = pd.read_csv("muramatsu_data.csv")
+df_sample = pd.read_csv("data\\muramatsu_data.csv")
 
 #シャピロウィルクの検定
 result1 = stats.shapiro(df_sample["yaw"])

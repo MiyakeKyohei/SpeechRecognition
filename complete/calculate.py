@@ -31,6 +31,7 @@ def yaw_judge(yaw):
         return 0 #見ていない
 
 def pitch_judge(width, pitch):
+    #使用する値の定義
     data = np.array([pitch, width]) #判定するデータ
     means = np.array([-4.48695652,66.76086957]) #村松君のデータの平均
     cov_i = np.array([[0.0700944 ,0.0128131] 
@@ -70,7 +71,6 @@ def pitch_judge(width, pitch):
             return np.array([1, look_position]) #おそらく頭を見ている
         else:
             return np.array([0, look_position]) #おそらく見ていない
-"""
 if __name__=="__main__":
     cap = cv2.VideoCapture(0)
     r, image = cap.read()
@@ -78,3 +78,4 @@ if __name__=="__main__":
     temp_row = face_api.get_headPose(image)
     look_result = look_or_not(temp_row)
     print(look_result)
+"""

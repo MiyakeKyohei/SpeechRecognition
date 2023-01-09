@@ -1,8 +1,11 @@
 import requests
 import json
 import numpy as np
-import cv2
 import os
+os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
+import cv2
+import calculate as cl
+#import os
 
 class faceAPIpart:
     #顔認識に用いる識別機の設定
@@ -12,17 +15,18 @@ class faceAPIpart:
     cascade = cv2.CascadeClassifier(cascade_path)
 
     #サブスクリプションキーの設定
-    KEY = '43339af7313b481db1b97970b9599809'
+    #KEY = '43339af7313b481db1b97970b9599809'(以前のやつ)
+    KEY = '12300f103f6041ea8cf703d62c22a5c8'
     #エンドポイントURLの設定
-    ENDPOINT = 'https://kmiyake-test.cognitiveservices.azure.com/'
+    #ENDPOINT = 'https://kmiyake-test.cognitiveservices.azure.com/'(旧エンドポイント)
+    ENDPOINT = 'https://miyakenewface.cognitiveservices.azure.com/'
     ##初期設定
     #cap = cv2.VideoCapture(0)#ひとまず0で内蔵カメラ。1にすると外付けカメラを使用できる
-    unable_Pose = [180, 180, 180]#あり得ない値
-    count = 0 #撮影回数を示すカウンタ
+    unable_Pose = [180, 180, 180] #あり得ない値
 
     #faceAPIpartのクラスのインスタンスを定義するメソッド
     def __init__(self):
-        headPose_data = [[0, 0, 0]]
+        headPose_data = [0, 0, 0]
 
     #カスケード分類器を用いて顔があるか判定する関数
     def cascade_judge(image): #imageはビデオから得た画像データ
@@ -50,10 +54,14 @@ class faceAPIpart:
         while index < analysis_len:
             result_temp = [analysis[index]['faceAttributes']['headPose']['roll'],
                         analysis[index]['faceAttributes']['headPose']['yaw'],
-                        analysis[index]['faceAttributes']['headPose']['pitch']]
+                        analysis[index]['faceAttributes']['headPose']['pitch'],
+                        analysis[index]['faceRectangle']['top'],
+                        analysis[index]['faceRectangle']['left'],
+                        analysis[index]['faceRectangle']['width'],
+                        analysis[index]['faceRectangle']['height']]
             #行列の生成
             if index == 0:
-                result = result_temp
+                result = np.vstack((result_temp, result_temp))
             else:
                 result = np.vstack((result, result_temp))
             index = index + 1
@@ -68,11 +76,22 @@ class faceAPIpart:
     #imageデータから顔の向きを返す関数
     def get_headPose(self, image):
         try:
-            if faceAPIpart.cascade_judge(image) == 1:
-                filename = "temp\\target.jpg"
-                faceAPIpart.saveImage(filename, image)
-                return faceAPIpart.get_faceAPI_result(filename)
-            else:
-                return faceAPIpart.unable_Pose
+            #if faceAPIpart.cascade_judge(image) == 1:
+            filename = "temp\\target.jpg" #撮影した画像をtemp\\target.jpgに保存
+            faceAPIpart.saveImage(filename, image)
+            return faceAPIpart.get_faceAPI_result(filename)
         except:
             return faceAPIpart.unable_Pose
+
+
+if __name__=="__main__":
+    cap = cv2.VideoCapture(0)
+    count = 0
+    while count < 1:
+        r, image = cap.read()
+        ret_array = faceAPIpart.get_headPose(image)
+        if cl.look_or_not(ret_array[5], ret_array[1], ret_array[2]) == 1:
+            print("見ている")
+        else:
+            print("見ていない")
+        count = count + 1
