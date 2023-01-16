@@ -20,7 +20,7 @@ for i in range(k):
 plt.ylim(0, 0.5)
 plt.xlim(0, 7)
 #plt.grid()
-plt.xlabel("Anomary Score")
+plt.xlabel("Anomaly Score")
 plt.ylabel("Density")
 #plt.hist(cum, 80, color="lightgreen", normed=True)
 xx = np.linspace(0, 25, 1000)

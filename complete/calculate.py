@@ -4,7 +4,7 @@ from scipy import stats
 from scipy.spatial import distance
 import cv2
 import faceAPIpart as face
-#外から呼び出す関数、見てたら1,見てないなら0
+#外から呼び出す関数,見てたら1,見てないなら0
 def look_or_not(result):# 返却された行列をそのままま引数とする.
     try:
         for i in range(len(result)): #送られてきた人数分のデータをさらう
@@ -13,7 +13,7 @@ def look_or_not(result):# 返却された行列をそのままま引数とする
             pitch = result[i, 2]
             if yaw_judge(yaw) == 1 and pitch_judge(width, pitch) == 1:
                 return 1 #誰かが向いていたら1を返す
-        return 0 #　誰も向いていないので0を返す.
+        return 0 #誰も向いていないので0を返す
     except:
         return 0 #何らかのエラーもしくは顔が映っていない
 
