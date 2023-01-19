@@ -14,11 +14,13 @@ import calculate as cl
 import keyboard
 import videoCap as vcap
 import threading
+import time
 #import mecab_split
 
 look_result = 0
 
 def system():
+    #グローバル変数の指定
     global look_result
     #テキストファイルopen
     datalist = databaseload.fopen()
@@ -50,7 +52,7 @@ def takeVideo():
     global look_result
     cap = cv2.VideoCapture(0)
     face_api = f.faceAPIpart()
-    fps = 1
+    fps = 0.75
     w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')

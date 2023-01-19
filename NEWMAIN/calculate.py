@@ -11,7 +11,8 @@ def look_or_not(result):# 返却された行列をそのままま引数とする
             yaw = result[i, 1]
             width = result[i, 5]
             pitch = result[i, 2]
-            if yaw_judge(yaw) == 1 and pitch_judge(width, pitch) == 1:
+            #if yaw_judge(yaw) == 1 and pitch_judge(width, pitch) == 1:
+            if yaw_judge(yaw) == 1 and new_pitch_judge(pitch) == 1:
                 return 1 #誰かが向いていたら1を返す
         return 0 #誰も向いていないので0を返す
     except:
@@ -25,6 +26,18 @@ def yaw_judge(yaw):
     yaw_mean = 0.2076086956521739 #データの平均値
     yaw_variance = 4.051260152890587 #データの分散
     anomaly_score = (yaw - yaw_mean)**2 / yaw_variance #データの異常度
+    if anomaly_score <= threshold: #異常度が閾値以下
+        return 1 #見ている
+    else:
+        return 0 #見ていない
+
+def new_pitch_judge(pitch):
+    #村松君のデータを基にしています
+    # 有意水準0.01でシャピロウィルク検定を使用すると正規分布に従うと考えられたため
+    threshold = stats.chi2.ppf(0.99, 1) #閾値(有意水準0.01)
+    pitch_mean = 7.21 #データの平均値
+    pitch_variance = 13.017482758620691 #データの分散
+    anomaly_score = (pitch - pitch_mean)**2 / pitch_variance #データの異常度
     if anomaly_score <= threshold: #異常度が閾値以下
         return 1 #見ている
     else:

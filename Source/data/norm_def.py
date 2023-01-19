@@ -7,20 +7,20 @@ import numpy as np
 from statistics import mean, variance
 
 #データの読み込み
-df_sample = pd.read_csv("data\\muramatsu_data.csv")
+df_sample = pd.read_csv("data\\data_test_06.csv")
 
 #シャピロウィルクの検定
-result1 = stats.shapiro(df_sample["yaw"])
+result1 = stats.shapiro(df_sample["pitch"])
 print(result1)
 
 #コルゴモロフ・スミルノフ検定
-result2 = stats.ks_1samp(df_sample["yaw"], stats.norm.cdf)
+result2 = stats.ks_1samp(df_sample["pitch"], stats.norm.cdf)
 print(result2)
 
-yaw_mean = mean(df_sample["yaw"])
-print("yaw_mean is ", yaw_mean)
-yaw_variance = variance(df_sample["yaw"])
-print("yaw_variance is ", yaw_variance)
+yaw_mean = mean(df_sample["pitch"])
+print("pitch_mean is ", yaw_mean)
+yaw_variance = variance(df_sample["pitch"])
+print("pitch_variance is ", yaw_variance)
 
 
 '''

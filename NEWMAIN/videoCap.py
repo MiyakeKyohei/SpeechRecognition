@@ -18,7 +18,7 @@ def drawImg(image, result_row):
                 left = int(result_row[i, 4])
                 width = int(result_row[i, 5])
                 height = int(result_row[i, 6])
-                flag = mh.floor((cl.yaw_judge(yaw) + cl.pitch_judge(width, pitch)) / 2)
+                flag = mh.floor((cl.yaw_judge(yaw) + cl.new_pitch_judge(pitch)) / 2)
                 #四角入力
                 cv2.rectangle(image, #図形入力画像
                             (left, top), #始点
