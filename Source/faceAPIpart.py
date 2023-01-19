@@ -41,32 +41,35 @@ class faceAPIpart:
             return 0
 
     #faceAPIからの戻り値を行列に直し、返すメソッド
-    def get_faceAPI_result(filename):
-        image_data = open(filename, "rb")#処理する画像を選択する
-        #faceAPIで解析
-        response = requests.post(faceAPIpart.ENDPOINT + "face/v1.0/detect?returnFaceAttributes=headPose", data=image_data, headers={"Ocp-Apim-Subscription-Key": faceAPIpart.KEY, "Content-Type": "application/octet-stream"})
-        analysis = response.json() #json出力
-        #行列の生成
-        analysis_len = len(analysis) #検出した顔の個数
-        index = 0 #配列のインデックス
-        result = faceAPIpart.unable_Pose #返却用配列の初期化
-        #faceのjsonから抽出したい項目を配列に入れる
-        while index < analysis_len:
-            result_temp = [analysis[index]['faceAttributes']['headPose']['roll'],
-                        analysis[index]['faceAttributes']['headPose']['yaw'],
-                        analysis[index]['faceAttributes']['headPose']['pitch'],
-                        analysis[index]['faceRectangle']['top'],
-                        analysis[index]['faceRectangle']['left'],
-                        analysis[index]['faceRectangle']['width'],
-                        analysis[index]['faceRectangle']['height']]
+    def get_faceAPI_result(self, filename):
+        try:
+            image_data = open(filename, "rb")#処理する画像を選択する
+            #faceAPIで解析
+            response = requests.post(faceAPIpart.ENDPOINT + "face/v1.0/detect?returnFaceAttributes=headPose", data=image_data, headers={"Ocp-Apim-Subscription-Key": faceAPIpart.KEY, "Content-Type": "application/octet-stream"})
+            analysis = response.json() #json出力
             #行列の生成
-            if index == 0:
-                result = np.vstack((result_temp, result_temp))
-            else:
-                result = np.vstack((result, result_temp))
-            index = index + 1
-        #結果の出力
-        return np.array(result)
+            analysis_len = len(analysis) #検出した顔の個数
+            index = 0 #配列のインデックス
+            result = faceAPIpart.unable_Pose #返却用配列の初期化
+            #faceのjsonから抽出したい項目を配列に入れる
+            while index < analysis_len:
+                result_temp = [analysis[index]['faceAttributes']['headPose']['roll'],
+                            analysis[index]['faceAttributes']['headPose']['yaw'],
+                            analysis[index]['faceAttributes']['headPose']['pitch'],
+                            analysis[index]['faceRectangle']['top'],
+                            analysis[index]['faceRectangle']['left'],
+                            analysis[index]['faceRectangle']['width'],
+                            analysis[index]['faceRectangle']['height']]
+                #行列の生成
+                if index == 0:
+                    result = np.vstack((result_temp, result_temp))
+                else:
+                    result = np.vstack((result, result_temp))
+                index = index + 1
+            #結果の出力
+            return np.array(result)
+        except:
+            return faceAPIpart.unable_Pose
 
     #imageデータをtempに保存する関数
     def saveImage(filename, image):
