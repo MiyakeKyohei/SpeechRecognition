@@ -7,8 +7,17 @@ import math as mh
 
 flag = 0
 
-def drawImg(image, result_row):
+def drawImg(image, result_row, call_flag):
     try:
+        #もし音量を0にしたテキストを表示させる時のプログラム
+        if call_flag == 1:
+            cv2.putText(image,
+                        "Volume 0",
+                        (0, 470),
+                        fontFace=cv2.FONT_HERSHEY_COMPLEX,
+                        fontScale=1.5,
+                        color=(0 , 0, 255),
+                        thickness=1)
         for i in range(len(result_row)):
             if i != 0:
                 roll = result_row[i, 0]

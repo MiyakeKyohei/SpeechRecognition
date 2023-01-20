@@ -18,10 +18,12 @@ import time
 #import mecab_split
 
 look_result = 0
+call_flag = 0
 
 def system():
     #グローバル変数の指定
     global look_result
+    global call_flag
     #テキストファイルopen
     datalist = databaseload.fopen()
     #以下の処理を繰り返す
@@ -40,7 +42,7 @@ def system():
                     text = convert_hiragana_kakasi.convert_hiragana(node,kakasi)#ひらがな変換
                     flag = textmatching.match(text,datalist)#テキストマッチングの結果
                     if flag == 1:
-                        #print('終了しました。')
+                        call_flag = 1
                         break
                     else:node = node.next#次の単語
             else:
@@ -50,24 +52,28 @@ def system():
 
 def takeVideo():
     global look_result
+    global call_flag
     cap = cv2.VideoCapture(0)
     face_api = f.faceAPIpart()
-    fps = 0.75
+    fps = 0.70
     w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
     video = cv2.VideoWriter("video.mp4", fourcc, fps, (w, h))
     #filename="temp\\test.jpg"
     while True:
+        t1 = time.time()
         r, image = cap.read()
         result_row = face_api.get_headPose(image)
         look_result = cl.look_or_not(result_row)
-        vcap.drawImg(image, result_row)
+        vcap.drawImg(image, result_row, call_flag)
         cv2.imshow("img", image)
         video.write(image)
         cv2.imwrite("temp\\test.jpg", image)
         if keyboard.is_pressed("q"):
             break
+        t2 = time.time()
+        print("time is ", t2 -t1)
     cv2.destroyAllWindows()
     cap.release()
     video.release()

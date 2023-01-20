@@ -35,7 +35,7 @@ def new_pitch_judge(pitch):
     #村松君のデータを基にしています
     # 有意水準0.01でシャピロウィルク検定を使用すると正規分布に従うと考えられたため
     threshold = stats.chi2.ppf(0.99, 1) #閾値(有意水準0.01)
-    pitch_mean = 7.21 #データの平均値
+    pitch_mean = 4.21 #データの平均値
     pitch_variance = 13.017482758620691 #データの分散
     anomaly_score = (pitch - pitch_mean)**2 / pitch_variance #データの異常度
     if anomaly_score <= threshold: #異常度が閾値以下
